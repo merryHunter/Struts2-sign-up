@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+    <constant name="struts.convention.result.path" value="/"></constant>
+
+    <package name="user" namespace="/" extends="struts-default">
+        <interceptors>
+            <interceptor name="logging"
+                         class="com.register.interceptors.LoggerInterceptor"></interceptor>
+            <interceptor-stack name="logStack">
+                <interceptor-ref name="logging"></interceptor-ref>
+                <interceptor-ref name="defaultStack"></interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="logStack"></default-interceptor-ref>
+
+        <global-results>
+            <result name="login" type="redirect">home.action</result>
+        </global-results>
+
+        <action name="home">
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+            <result>/login.jsp</result>
+        </action>
+
+        <action name="login" class="com.register.actions.LoginAction">
+            <interceptor-ref name="logStack"></interceptor-ref>
+            <result name="success">/welcome.jsp</result>
+            <result name="input">/login.jsp</result>
+            <result name="error">/accessDenied.jsp</result>
+        </action>
+        <action name="welcome" class="com.register.actions.WelcomeAction">
+            <result name="success">/welcome.jsp</result>
+        </action>
+
+    </package>
+
+</struts>
